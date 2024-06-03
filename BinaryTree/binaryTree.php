@@ -14,7 +14,23 @@ class BinaryTree
         $this->queue = new Queue();
     }
 
+    protected function insertLeftNode(Node $parentNode, int $value)
+    {
+        if ($value != -1) {
+            $leftNode = new Node(null, $value, null);
+            $parentNode->left = $leftNode;
+            $this->queue->enqueue($leftNode);
+        }
+    }
 
+    protected function insertRightNode(Node $parentNode, int $value)
+    {
+        if ($value != -1) {
+            $rightNode = new Node(null, $value, null);
+            $parentNode->right = $rightNode;
+            $this->queue->enqueue($rightNode);
+        }
+    }
     protected function getLeftNodeData(Node $parentNode)
     {
         $leftChildValue = (int)readline("Enter the left child of:" . $parentNode->val . "\n");
@@ -38,6 +54,29 @@ class BinaryTree
         }
     }
 
+    public function generateTreefromGivenArr(array $arr)
+    {
+
+        $length = count($arr);
+        for ($i = 0; $i < $length; $i++) {
+
+            if ($i === 0) {
+                $this->rootNode = new Node(null, $arr[$i], null);
+                $this->queue->enqueue($this->rootNode);
+                continue;
+            }
+
+            while (!$this->queue->isEmpty()) {
+                $parentNode = $this->queue->dequeue();
+                // left child inserting
+                $this->insertLeftNode($parentNode, $arr[$i]);
+                $i++;
+                // right child inserting
+                $this->insertRightNode($parentNode, $arr[$i]);
+                $i++;
+            }
+        }
+    }
 
     public function getData()
     {
@@ -87,7 +126,7 @@ class BinaryTree
 
 $tree = new BinaryTree();
 
-$tree->getData();
+$tree->generateTreefromGivenArr([12, 6, 3, 7, 11, 9, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]);
 echo "Pre Order : Traversal:\n";
 $tree->preOrderTraversal($tree->rootNode);
 echo "\n In Order : Traversal:\n";
