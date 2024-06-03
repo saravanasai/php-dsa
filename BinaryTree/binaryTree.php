@@ -7,11 +7,13 @@ class BinaryTree
 
     public ?Node $rootNode;
     public ?Queue $queue;
+    public ?Queue $levelQueue;
 
     public function __construct()
     {
         $this->rootNode = null;
         $this->queue = new Queue();
+        $this->levelQueue =  new Queue();
     }
 
     protected function insertLeftNode(Node $parentNode, int $value)
@@ -121,6 +123,26 @@ class BinaryTree
             echo $node->val . ",";
         }
     }
+
+    public function levelOrderTraversal(Node $node = null)
+    {
+        if (!$node) {
+            return;
+        }
+        
+        while ($node) {
+            echo $node->val . ",";
+
+            if ($node->left) {
+                $this->levelQueue->enqueue($node->left);
+            }
+            if ($node->right) {
+                $this->levelQueue->enqueue($node->right);
+            }
+
+            $node = !$this->levelQueue->isEmpty() ? $this->levelQueue->dequeue() : null;
+        }
+    }
 }
 
 
@@ -133,3 +155,5 @@ echo "\n In Order : Traversal:\n";
 $tree->inOrderTraversal($tree->rootNode);
 echo "\n Post Order : Traversal:\n";
 $tree->postOrderTraversal($tree->rootNode);
+echo "\n Lever Order : Traversal:\n";
+$tree->levelOrderTraversal($tree->rootNode);
