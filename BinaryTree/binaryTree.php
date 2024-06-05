@@ -129,7 +129,7 @@ class BinaryTree
         if (!$node) {
             return;
         }
-        
+
         while ($node) {
             echo $node->val . ",";
 
