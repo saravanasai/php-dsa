@@ -143,6 +143,28 @@ class BinaryTree
             $node = !$this->levelQueue->isEmpty() ? $this->levelQueue->dequeue() : null;
         }
     }
+    public function countNode(Node $node = null, int $count = 0)
+    {
+        if($node) {
+            $count++;
+            $count = $this->countNode($node->left, $count);
+            $count = $this->countNode($node->right, $count);
+        }
+
+        return $count;
+    }
+
+    public function treeHeight(Node $node = null, int $count = 0)
+    {
+        if($node) {
+            $count = $this->treeHeight($node->left, $count);
+            $count++;
+            $count = $this->treeHeight($node->right, $count);
+           
+        }
+       
+        return $count;
+    }
 }
 
 
@@ -151,9 +173,11 @@ $tree = new BinaryTree();
 $tree->generateTreefromGivenArr([12, 6, 3, 7, 11, 9, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]);
 echo "Pre Order : Traversal:\n";
 $tree->preOrderTraversal($tree->rootNode);
-echo "\n In Order : Traversal:\n";
+echo "\nIn Order : Traversal:\n";
 $tree->inOrderTraversal($tree->rootNode);
-echo "\n Post Order : Traversal:\n";
+echo "\nPost Order : Traversal:\n";
 $tree->postOrderTraversal($tree->rootNode);
 echo "\n Lever Order : Traversal:\n";
 $tree->levelOrderTraversal($tree->rootNode);
+echo "\nNode Count :".$tree->countNode($tree->rootNode);
+echo "\nTree height :".$tree->treeHeight($tree->rootNode);
