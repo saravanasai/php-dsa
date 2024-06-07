@@ -13,10 +13,10 @@ class BinaryTree
     {
         $this->rootNode = null;
         $this->queue = new Queue();
-        $this->levelQueue =  new Queue();
+        $this->levelQueue = new Queue();
     }
 
-    protected function insertLeftNode(Node $parentNode, int $value)
+    protected function insertLeftNode(Node $parentNode, int $value): void
     {
         if ($value != -1) {
             $leftNode = new Node(null, $value, null);
@@ -25,7 +25,7 @@ class BinaryTree
         }
     }
 
-    protected function insertRightNode(Node $parentNode, int $value)
+    protected function insertRightNode(Node $parentNode, int $value): void
     {
         if ($value != -1) {
             $rightNode = new Node(null, $value, null);
@@ -33,9 +33,9 @@ class BinaryTree
             $this->queue->enqueue($rightNode);
         }
     }
-    protected function getLeftNodeData(Node $parentNode)
+    protected function getLeftNodeData(Node $parentNode): void
     {
-        $leftChildValue = (int)readline("Enter the left child of:" . $parentNode->val . "\n");
+        $leftChildValue = (int) readline("Enter the left child of:" . $parentNode->val . "\n");
 
         if ($leftChildValue != -1) {
             $leftNode = new Node(null, $leftChildValue, null);
@@ -45,9 +45,9 @@ class BinaryTree
     }
 
 
-    protected function getRightNodeData(Node $parentNode)
+    protected function getRightNodeData(Node $parentNode): void
     {
-        $rightChildValue = (int)readline("Enter the right child of:" . $parentNode->val . "\n");
+        $rightChildValue = (int) readline("Enter the right child of:" . $parentNode->val . "\n");
 
         if ($rightChildValue != -1) {
             $rightNode = new Node(null, $rightChildValue, null);
@@ -56,7 +56,7 @@ class BinaryTree
         }
     }
 
-    public function generateTreefromGivenArr(array $arr)
+    public function generateTreefromGivenArr(array $arr): void
     {
 
         $length = count($arr);
@@ -80,9 +80,9 @@ class BinaryTree
         }
     }
 
-    public function getData()
+    public function getData(): void
     {
-        $rootNodeValue = (int)readline("Enter the root node value:" . "\n");
+        $rootNodeValue = (int) readline("Enter the root node value:" . "\n");
 
         $this->rootNode = new Node(null, $rootNodeValue, null);
 
@@ -97,7 +97,7 @@ class BinaryTree
         }
     }
 
-    public function preOrderTraversal(Node $node = null)
+    public function preOrderTraversal(Node $node = null): void
     {
         if ($node) {
             echo $node->val . ",";
@@ -106,7 +106,7 @@ class BinaryTree
         }
     }
 
-    public function inOrderTraversal(Node $node = null)
+    public function inOrderTraversal(Node $node = null): void
     {
         if ($node) {
             $this->inOrderTraversal($node->left);
@@ -115,7 +115,7 @@ class BinaryTree
         }
     }
 
-    public function postOrderTraversal(Node $node = null)
+    public function postOrderTraversal(Node $node = null): void
     {
         if ($node) {
             $this->postOrderTraversal($node->left);
@@ -124,7 +124,7 @@ class BinaryTree
         }
     }
 
-    public function levelOrderTraversal(Node $node = null)
+    public function levelOrderTraversal(Node $node = null): void
     {
         if (!$node) {
             return;
@@ -143,27 +143,44 @@ class BinaryTree
             $node = !$this->levelQueue->isEmpty() ? $this->levelQueue->dequeue() : null;
         }
     }
-    public function countNode(Node $node = null, int $count = 0)
+    public function countNode(Node $node = null): int
     {
-        if($node) {
-            $count++;
-            $count = $this->countNode($node->left, $count);
-            $count = $this->countNode($node->right, $count);
+        $x = 0;
+        $y = 0;
+        if ($node) {
+            $x = $this->countNode($node->left);
+            $y = $this->countNode($node->right);
+            return $x + $y + 1;
         }
 
-        return $count;
+        return 0;
     }
 
-    public function treeHeight(Node $node = null, int $count = 0)
+    public function countLeafNode(Node $node = null, int $leadNodeCount = 0): int
     {
-        if($node) {
-            $count = $this->treeHeight($node->left, $count);
-            $count++;
-            $count = $this->treeHeight($node->right, $count);
-           
+        if ($node) {
+            if ($node->left == null && $node->right == null) {
+                $leadNodeCount++;
+            }
+            $leadNodeCount = $this->countLeafNode($node->left, $leadNodeCount);
+            $leadNodeCount = $this->countLeafNode($node->right, $leadNodeCount);
+            return $leadNodeCount;
         }
-       
-        return $count;
+
+        return $leadNodeCount;
+    }
+
+    public function treeHeight(Node $node = null): int
+    {
+        $x = 0;
+        $y = 0;
+        if ($node) {
+            $x = $this->treeHeight($node->left);
+            $y = $this->treeHeight($node->right);
+            return $x > $y ? $x + 1 : $y + 1;
+        }
+
+        return 0;
     }
 }
 
@@ -179,5 +196,6 @@ echo "\nPost Order : Traversal:\n";
 $tree->postOrderTraversal($tree->rootNode);
 echo "\n Lever Order : Traversal:\n";
 $tree->levelOrderTraversal($tree->rootNode);
-echo "\nNode Count :".$tree->countNode($tree->rootNode);
-echo "\nTree height :".$tree->treeHeight($tree->rootNode);
+echo "\nNode Count :" . $tree->countNode($tree->rootNode);
+echo "\nTree height :" . $tree->treeHeight($tree->rootNode);
+echo "\n Leafnode count :" . $tree->countLeafNode($tree->rootNode);
