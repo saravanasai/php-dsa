@@ -2,7 +2,7 @@
 include_once "./queue.php";
 include_once "./node.php";
 
-class BinaryTree
+class Tree
 {
 
     public ?Node $rootNode;
@@ -185,7 +185,7 @@ class BinaryTree
 }
 
 
-$tree = new BinaryTree();
+$tree = new Tree();
 
 $tree->generateTreefromGivenArr([12, 6, 3, 7, 11, 9, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]);
 echo "Pre Order : Traversal:\n";
