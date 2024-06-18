@@ -65,20 +65,83 @@ class AvlTree
 
     public function LR_Rotation(Node $node): Node
     {
+        // tempPointers
+        $imbalanceNodeLeft = $node->left;
+        $imbalanceNodeLeftRight = $imbalanceNodeLeft->right;
 
-        return $node;
+        // balanacing the childerns of imbalanceNodeLeftRight;
+        $imbalanceNodeLeft->right = $imbalanceNodeLeftRight->left;
+        $node->left = $imbalanceNodeLeftRight->right;
+
+        // balanacing the tree;
+        $imbalanceNodeLeftRight->left = $imbalanceNodeLeft;
+        $imbalanceNodeLeftRight->right = $node;
+
+        $node->height = $this->nodeHeight($node);
+        $imbalanceNodeLeftRight->height = $this->nodeHeight($imbalanceNodeLeftRight);
+        $imbalanceNodeLeft->height = $this->nodeHeight($imbalanceNodeLeft);
+
+        if ($this->rootNode == $node) {
+            $this->rootNode = $imbalanceNodeLeftRight;
+        }
+
+
+        return $imbalanceNodeLeftRight;
     }
 
     public function RR_Rotation(Node $node): Node
     {
 
-        return $node;
+        $imbNodeRight = $node->right;
+        $imbNodeRightLeft = $imbNodeRight->left;
+
+        $imbNodeRight->left = $node;
+        $node->right = $imbNodeRightLeft;
+
+        $node->height = $this->nodeHeight($node);
+        $imbNodeRight->height = $this->nodeHeight($imbNodeRight);
+
+        if ($this->rootNode == $node) {
+            $this->rootNode = $imbNodeRight;
+        }
+
+        return $imbNodeRight;
     }
 
     public function RL_Rotation(Node $node): Node
     {
 
-        return $node;
+        // tempPointers
+        $imbalanceNodeRight = $node->right;
+        $imbalanceNodeRightLeft = $imbalanceNodeRight->left;
+
+        // balanacing the childerns of imbalanceNodeRight;
+        $imbalanceNodeRight->left = $imbalanceNodeRightLeft->left;
+        $node->left = $imbalanceNodeRightLeft->left;
+
+        // balanacing the tree;
+        $imbalanceNodeRightLeft->right = $imbalanceNodeRight;
+        $imbalanceNodeRightLeft->left = $node;
+
+        $node->height = $this->nodeHeight($node);
+        $imbalanceNodeRightLeft->height = $this->nodeHeight($imbalanceNodeRightLeft);
+        $imbalanceNodeRight->height = $this->nodeHeight($imbalanceNodeRight);
+
+        if ($this->rootNode == $node) {
+            $this->rootNode = $imbalanceNodeRightLeft;
+        }
+
+
+        return $imbalanceNodeRightLeft;
+
+    }
+
+    public function insertFromArray(array $arr): void
+    {
+
+        foreach ($arr as $val) {
+            $this->insert($val);
+        }
     }
     public function insert(int $val): Node
     {
@@ -107,7 +170,6 @@ class AvlTree
         }
 
         $node->height = $this->nodeHeight($node);
-
 
         if ($this->balanceFactor($node) == 2 && $this->balanceFactor($node->left) == 1) {
 
@@ -165,12 +227,7 @@ class AvlTree
 
 $avlTree = new AvlTree();
 
-$avlTree->insert(50);
-$avlTree->insert(60);
-$avlTree->insert(40);
-$avlTree->insert(35);
-$avlTree->insert(34);
-$avlTree->insert(33);
-$avlTree->insert(32);
+$avlTree->insertFromArray([10, 30, 20]);
 
-$avlTree->levelOrderTraversal($avlTree->rootNode);
+echo "\n============Output============\n";
+$avlTree->levelOrderTraversal($avlTree->rootNode, true);
