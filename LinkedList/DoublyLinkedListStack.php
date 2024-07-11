@@ -61,11 +61,11 @@ class DoublyLinkedListStack
         $this->decreseNodeCount();
         return $popedNode;
     }
-    public function top(): string|int
+    public function top():int
     {
 
         if ($this->isEmpty()) {
-            return "";
+            return -1;
         }
 
         return $this->rear->val;
