@@ -1,4 +1,5 @@
 <?php
+
 class Heap
 {
     protected array $heapArr = [];
@@ -12,43 +13,46 @@ class Heap
 
     public function insert(int $val)
     {
-
         $this->heapArr[$this->heapIndex] = $val;
         $this->heapIndex++;
-
         if ($this->heapIndex >= 2) {
             $this->maxHeap();
         }
     }
 
+
     public function delete()
     {
-        // swap first to last & reduce heapIndex
-        $temp = $this->heapArr[1];
-        $this->heapArr[1] = $this->heapArr[$this->heapIndex - 1];
-        $this->heapArr[$this->heapIndex - 1] = $temp;
-        $this->heapIndex--;
+        $n = $this->heapIndex - 1;
+        $deletedValue = $this->heapArr[1];
+        $this->heapArr[1] = $this->heapArr[$n];
 
-        // Adjusting a heap based on new root element
         $i = 1;
-        while ($i < $this->heapIndex && $i * 2 <  $this->heapIndex &&  $i * 2 + 1 <  $this->heapIndex) {
+        $j = $i * 2;
 
-            $leftChild = $this->heapArr[($i * 2)];
-            $rightChild = $this->heapArr[($i * 2) + 1];
+        while ($j < $n - 1) {
 
-            if ($leftChild > $rightChild) {
-                $sTemp = $this->heapArr[($i * 2)];
-                $this->heapArr[($i * 2)] = $this->heapArr[$i];
-                $this->heapArr[$i] = $sTemp;
-                $i *= 2;
+            if ($this->heapArr[$j + 1] > $this->heapArr[$j]) {
+                $j += 1;
+            }
+
+            if ($this->heapArr[$i] < $this->heapArr[$j]) {
+
+                $stemp = $this->heapArr[$i];
+                $this->heapArr[$i] = $this->heapArr[$j];
+                $this->heapArr[$j] = $stemp;
+                $i = $j;
+                $j *= 2;
             } else {
-                $sTemp = $this->heapArr[($i * 2) + 1];
-                $this->heapArr[($i * 2) + 1] = $this->heapArr[$i];
-                $this->heapArr[$i] = $sTemp;
-                $i *= 2 + 1;
+                break;
             }
         }
+
+        $this->heapArr[$n] = $deletedValue;
+
+        $this->heapIndex--;
     }
+
     public function maxHeap()
     {
         $i = $this->heapIndex - 1;
@@ -62,11 +66,10 @@ class Heap
 
     public function sortHeap()
     {
-        for ($i =  $this->heapIndex - 1; $i > 0; $i--) {
+        for ($i = 1; $i < count($this->heapArr) - 1; $i++) {
             $this->delete();
         }
     }
-
     public function printArr()
     {
         for ($i = 0; $i < count($this->heapArr); $i++) {
@@ -78,9 +81,15 @@ class Heap
 
 $heap = new Heap();
 
+
+$heap->insert(35);
+$heap->insert(30);
+$heap->insert(15);
+$heap->insert(10);
+$heap->insert(40);
+$heap->insert(25);
 $heap->insert(5);
-$heap->insert(20);
-$heap->insert(90);
-$heap->insert(100);
+$heap->printArr();
+echo "\n After sort:\n";
 $heap->sortHeap();
 $heap->printArr();
