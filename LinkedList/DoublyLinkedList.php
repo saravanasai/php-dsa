@@ -2,6 +2,7 @@
 include_once "../commons/node.php";
 include_once "../HashMap/HashMap.php";
 
+
 class DoublyLinkedList
 {
     public ?DoubleSidedNode $head;
@@ -15,7 +16,7 @@ class DoublyLinkedList
 
     public function insert(int $data): DoubleSidedNode
     {
-        if ($this->head == null) {
+        if ($this->head === null) {
             $this->head = new DoubleSidedNode(null, $data, null);
             $this->tail = $this->head;
             return $this->head;
@@ -24,24 +25,30 @@ class DoublyLinkedList
         return $this->insertNode($this->head, $data);
     }
 
-
-    public function removeNode(DoubleSidedNode $node): DoubleSidedNode
+    public function removeNode(DoubleSidedNode $node): ?DoubleSidedNode
     {
-        //check if its a head node
-        if ($node->prev == null) {
-            // section to handle remove of head node
+        if ($this->head === null) {
+            return null; // Handle the case where the list is empty
+        }
+
+        // Check if it's the head node
+        if ($node->prev === null) {
             $this->head = $node->next;
+            if ($this->head !== null) {
+                $this->head->prev = null;
+            }
         }
 
-        if ($node->next == null) {
-            // section to handle remove of tail node
+        // Check if it's the tail node
+        if ($node->next === null) {
             $this->tail = $node->prev;
-            $node->prev->next = null;
-            $node->prev->next = null;
+            if ($this->tail !== null) {
+                $this->tail->next = null;
+            }
         }
 
-        if ($node->prev != null && $node->next != null) {
-            // section to handle remove of middle node
+        // Handle removal of a middle node
+        if ($node->prev !== null && $node->next !== null) {
             $node->prev->next = $node->next;
             $node->next->prev = $node->prev;
         }
@@ -49,7 +56,7 @@ class DoublyLinkedList
         return $node;
     }
 
-    private function insertNode(DoubleSidedNode $node, int $data)
+    private function insertNode(DoubleSidedNode $node, int $data): DoubleSidedNode
     {
         if ($node->next == null) {
             $node->next = new DoubleSidedNode(null, $data, $node);
@@ -63,7 +70,7 @@ class DoublyLinkedList
     public function printList(): void
     {
         $node = $this->head;
-        while ($node != null) {
+        while ($node !== null) {
             $this->printNode($node);
             $node = $node->next;
         }
@@ -72,7 +79,7 @@ class DoublyLinkedList
     public function printReverseList(): void
     {
         $node = $this->tail;
-        while ($node != null) {
+        while ($node !== null) {
             $this->printNode($node);
             $node = $node->prev;
         }
@@ -83,6 +90,7 @@ class DoublyLinkedList
         echo $node->val . "\n";
     }
 }
+
 
 
 $list = new DoublyLinkedList();
