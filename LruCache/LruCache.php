@@ -128,7 +128,7 @@ class LRUCache
     /**
      * @param Integer $capacity
      */
-    function __construct($capacity)
+    public function __construct($capacity)
     {
         $this->map = new Map();
         $this->cacheList = new CacheList();
