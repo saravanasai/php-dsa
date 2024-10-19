@@ -50,6 +50,7 @@ class Trie
     public function insert(string $str): void
     {
         $str = $this->toLowerCase($str);
+
         $trieNode = $this->rootNode;
         foreach (mb_str_split($str) as $char) {
             $asciiValue = $this->asciiValues[$char];
