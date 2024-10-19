@@ -47,8 +47,21 @@ class Trie
     {
         $this->rootNode = new TrieNode();
     }
+
+    public function isEmpty(string $str): bool
+    {
+        if (empty($str)) {
+            return true;
+        }
+        return false;
+    }
     public function insert(string $str): void
     {
+
+        if ($this->isEmpty($str)) {
+            return;
+        }
+
         $str = $this->toLowerCase($str);
 
         $trieNode = $this->rootNode;
@@ -66,6 +79,9 @@ class Trie
 
     public function search(string $str): bool
     {
+        if ($this->isEmpty($str)) {
+            return false;
+        }
         $str = $this->toLowerCase($str);
         $trieNode = $this->rootNode;
         foreach (mb_str_split($str) as $char) {
@@ -85,6 +101,9 @@ class Trie
 
     public function startsWith(string $str): bool
     {
+        if ($this->isEmpty($str)) {
+            return false;
+        }
         $str = $this->toLowerCase($str);
         $trieNode = $this->rootNode;
         foreach (mb_str_split($str) as $char) {
@@ -95,7 +114,7 @@ class Trie
             }
             $trieNode = $trieNode->map[$asciiValue];
         }
-        return $trieNode != null;;
+        return $trieNode != null;
     }
 }
 
