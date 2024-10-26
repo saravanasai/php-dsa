@@ -4,7 +4,33 @@ class Sum
 {
 
 
-    public function howSum(int $target,array $numbers): ?array
+    public function bestSum(int $target, array $numbers, int $stackCounter = 0): ?array
+    {
+        if ($target === 0) {
+            return [];
+        }
+
+        if ($target < 0) {
+            return null;
+        }
+
+        foreach ($numbers as $number) {
+            $remainder = $target - $number;
+            $result = $this->bestSum($remainder, $numbers, $stackCounter + 1);
+            if ($result !== null) {
+                $result[] = $number;
+                if ($stackCounter != 0) {
+                    return $result;
+                }
+            }
+
+            $ways[] = $result;
+        }
+
+        return $ways;
+    }
+
+    public function howSum(int $target, array $numbers): ?array
     {
         if ($target === 0) {
             return [];
@@ -47,8 +73,8 @@ class Sum
 
 
 $target = 8;
-$numbers = [2,5,3];
+$numbers = [2, 5, 3];
 $sum = new Sum();
-echo "output:".(bool)$sum->canSum($target, $numbers);
+echo "output:" . (bool)$sum->canSum($target, $numbers);
 echo "\n";
-echo "output:".json_encode($sum->howSum($target, $numbers));
+echo "output:" . json_encode($sum->bestSum($target, $numbers));
