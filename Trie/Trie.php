@@ -124,8 +124,6 @@ $seIndex = new Trie();
 $seIndex->insert("app");
 $seIndex->insert("apple");
 $seIndex->insert("ram");
-$start = $seIndex->startsWith("app");
-$start = $seIndex->startsWith("an");
+$start = $seIndex->startsWith("app"); // true
+$start = $seIndex->startsWith("an"); // false
 
-
-echo "okok";
