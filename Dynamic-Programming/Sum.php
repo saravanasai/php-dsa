@@ -2,7 +2,7 @@
 
 class Sum
 {
-
+    public array $ways = [];
 
     public function bestSum(int $target, array $numbers, int $stackCounter = 0): ?array
     {
@@ -19,15 +19,15 @@ class Sum
             $result = $this->bestSum($remainder, $numbers, $stackCounter + 1);
             if ($result !== null) {
                 $result[] = $number;
-                if ($stackCounter != 0) {
-                    return $result;
+                if ($stackCounter === 0) {
+                    $this->ways[] = $result;
+                    continue;
                 }
+                return $result;
             }
-
-            $ways[] = $result;
         }
 
-        return $ways;
+        return null;
     }
 
     public function howSum(int $target, array $numbers): ?array
@@ -77,4 +77,5 @@ $numbers = [2, 5, 3];
 $sum = new Sum();
 echo "output:" . (bool)$sum->canSum($target, $numbers);
 echo "\n";
-echo "output:" . json_encode($sum->bestSum($target, $numbers));
+$sum->bestSum($target, $numbers);
+echo "output:" . json_encode($sum->ways);
