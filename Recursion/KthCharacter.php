@@ -1,6 +1,6 @@
 <?php
 
-class Solution
+class KthCharacter
 {
 
     function kthCharacter(int $k, string $str = "a"): string
@@ -22,6 +22,6 @@ class Solution
 }
 
 
-$sol = new Solution();
+$sol = new KthCharacter();
 
 echo $sol->kthCharacter(10);
