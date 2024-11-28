@@ -4,7 +4,7 @@ class Solution
     function reverseWords(string $s): string
     {
 
-        $strArr = array_filter(explode(" ", trim($s)),fn($value) => $value==0 || !empty($value));
+        $strArr = array_filter(explode(" ", trim($s)), fn($value) => $value == 0 || !empty($value));
 
         $arr = array_reverse($strArr);
 
